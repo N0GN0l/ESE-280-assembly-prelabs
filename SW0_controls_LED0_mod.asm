@@ -7,7 +7,7 @@ start:
 
 
 loop:
-	sbsic VPORTB_IN, 2
+	sbic VPORTB_IN, 2
 	sbi VPORTB_OUT, 3
 	sbis VPORTB_IN, 2
 	cbi VPORTB_OUT, 3
