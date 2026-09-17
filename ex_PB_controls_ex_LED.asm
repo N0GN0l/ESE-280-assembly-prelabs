@@ -16,5 +16,5 @@ loop:
 	sbis VPORTA_IN, 7
 	cbi VPORTD_OUT, 7
 	sbic VPORTA_IN, 7
-	sbi VPORTD_IN, 7
+	sbi VPORTD_OUT, 7
 	rjmp loop
