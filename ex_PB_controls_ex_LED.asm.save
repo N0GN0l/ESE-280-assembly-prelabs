@@ -1,0 +1,20 @@
+;
+; ex_PB_controls_ex_LED.asm
+;
+; Created: 9/16/2026 10:36:05 PM
+; Author : str22
+;
+
+
+; Replace with your application code
+start:
+	sbi VPORTD_DIR, 7
+	sbi VPORTD_OUT, 7
+	cbi VPORTA_DIR, 7
+
+loop:
+	sbis VPORTA_IN, 7
+	cbi VPORTD_OUT, 7
+	sbic VPORTA_IN, 7
+	sbi VPORTD_OUT, 7
+	rjmp loop
