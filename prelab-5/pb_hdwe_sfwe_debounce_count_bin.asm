@@ -33,7 +33,9 @@ display_and_update:
 	breq roll_over	
 
 	inc r17		         ;if the check fails then r17 is incremented by one
-	out VPORTD_OUT, r17	 ;outputs the value of r17 to display on VPORTD
+	mov r20, r17	;Need to copy the data so that the counter doesn't break
+	com r20		;LED are active low
+	out VPORTD_OUT, r20	 ;outputs the value of r17 to display on VPORTD
 
 	cbi VPORTE_OUT, 1    ;reset the flip flop 
 
