@@ -5,8 +5,8 @@
 	(uuid "b652f389-5275-44bd-a341-8481a2ee4dd0")
 	(paper "A4")
 	(title_block
-		(title "Lab 04 DIP switch and Bargraphs, Design task 1")
-		(date "2026-24-11")
+		(title "Lab 05 Switch Debouncing, Polling, and Conditional I/O")
+		(date "2026-10-08")
 	)
 	(lib_symbols
 		(symbol "74xx:74HC74"
@@ -18,27 +18,29 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at -7.62 8.89 0)
+			(property "Reference" "U1"
+				(at 2.1433 10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Value" "74HC74"
-				(at -7.62 -8.89 0)
+				(at 2.1433 7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Package_CSP:Xilinx_CSG48_7.0x7.0mm_Layout7x7_P0.8mm"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -105,7 +107,7 @@
 			)
 			(symbol "74HC74_1_0"
 				(pin input line
-					(at 0 -7.62 90)
+					(at 1.27 -11.43 90)
 					(length 2.54)
 					(name "~{R}"
 						(effects
@@ -123,7 +125,7 @@
 					)
 				)
 				(pin input line
-					(at -7.62 2.54 0)
+					(at -7.62 0 0)
 					(length 2.54)
 					(name "D"
 						(effects
@@ -141,7 +143,7 @@
 					)
 				)
 				(pin input clock
-					(at -7.62 0 0)
+					(at -7.62 -3.81 0)
 					(length 2.54)
 					(name "C"
 						(effects
@@ -159,7 +161,7 @@
 					)
 				)
 				(pin input line
-					(at 0 7.62 270)
+					(at 1.27 7.62 270)
 					(length 2.54)
 					(name "~{S}"
 						(effects
@@ -177,7 +179,7 @@
 					)
 				)
 				(pin output line
-					(at 7.62 2.54 180)
+					(at 10.16 2.54 180)
 					(length 2.54)
 					(name "Q"
 						(effects
@@ -195,7 +197,7 @@
 					)
 				)
 				(pin output line
-					(at 7.62 -2.54 180)
+					(at 10.16 -2.54 180)
 					(length 2.54)
 					(name "~{Q}"
 						(effects
@@ -212,11 +214,47 @@
 						)
 					)
 				)
+				(pin input line
+					(at -7.62 -7.62 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
 			(symbol "74HC74_1_1"
 				(rectangle
 					(start -5.08 5.08)
-					(end 5.08 -5.08)
+					(end 7.62 -8.89)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -4308,13 +4346,25 @@
 		(at 97.79 144.78)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "726265d0-aa4c-4fdf-82a6-a1e7f30f2efc")
+		(uuid "7c1df2da-d0d1-4eff-8f3a-3d1393fbae7f")
+	)
+	(junction
+		(at 129.54 132.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8b75b37a-3362-4ea6-99a6-d45102576d53")
 	)
 	(junction
 		(at 173.99 101.6)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9861f808-9d0f-47e4-99b0-e0650640d455")
+	)
+	(junction
+		(at 109.22 132.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c3c28849-c5c7-4d7a-9c9d-2ad15da6b28b")
 	)
 	(junction
 		(at 173.99 86.36)
@@ -4668,7 +4718,7 @@
 	)
 	(wire
 		(pts
-			(xy 127 132.08) (xy 137.16 132.08)
+			(xy 127 132.08) (xy 129.54 132.08)
 		)
 		(stroke
 			(width 0)
@@ -4818,7 +4868,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 132.08) (xy 111.76 132.08)
+			(xy 106.68 132.08) (xy 109.22 132.08)
 		)
 		(stroke
 			(width 0)
@@ -4948,6 +4998,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 144.78) (xy 97.79 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4effc876-fb22-4fe8-8d06-8f2498782522")
+	)
+	(wire
+		(pts
 			(xy 53.34 96.52) (xy 53.34 99.06)
 		)
 		(stroke
@@ -4968,16 +5028,6 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 144.78) (xy 111.76 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "51e904e6-25d2-4d09-9187-6bc307472eef")
-	)
-	(wire
-		(pts
 			(xy 173.99 86.36) (xy 173.99 88.9)
 		)
 		(stroke
@@ -4988,13 +5038,33 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 142.24) (xy 119.38 146.05)
+			(xy 120.65 146.05) (xy 120.65 149.86)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "55a4a54d-2fe5-4fec-a9de-134a06d8085c")
+	)
+	(wire
+		(pts
+			(xy 109.22 132.08) (xy 109.22 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "59095010-09b0-48b7-869c-a83ac80e5f75")
+	)
+	(wire
+		(pts
+			(xy 109.22 138.43) (xy 109.22 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c4887a5-df59-48e8-920d-60ee165d57d3")
 	)
 	(wire
 		(pts
@@ -5148,16 +5218,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 144.78) (xy 111.76 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "911c650e-8d33-4c1e-99aa-647af118ba92")
-	)
-	(wire
-		(pts
 			(xy 148.59 128.27) (xy 158.75 128.27)
 		)
 		(stroke
@@ -5208,6 +5268,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 132.08) (xy 111.76 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a3158936-7e11-4093-b397-e8f635079344")
+	)
+	(wire
+		(pts
 			(xy 148.59 123.19) (xy 158.75 123.19)
 		)
 		(stroke
@@ -5235,6 +5305,16 @@
 			(type default)
 		)
 		(uuid "b12d7709-88c4-4ad2-8b15-0efb03a79456")
+	)
+	(wire
+		(pts
+			(xy 111.76 138.43) (xy 109.22 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b17dc643-f599-4972-8016-d249e6bb425b")
 	)
 	(wire
 		(pts
@@ -5378,7 +5458,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 123.19) (xy 119.38 127)
+			(xy 120.65 123.19) (xy 120.65 127)
 		)
 		(stroke
 			(width 0)
@@ -5478,13 +5558,23 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 142.24) (xy 97.79 148.59)
+			(xy 97.79 142.24) (xy 97.79 144.78)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "ecf610a5-20cc-4c08-9ef0-cf7ee5dfef7e")
+	)
+	(wire
+		(pts
+			(xy 97.79 144.78) (xy 97.79 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee2cb7f8-73ee-4747-83b6-a99e8b9d8c70")
 	)
 	(wire
 		(pts
@@ -5508,6 +5598,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 142.24) (xy 111.76 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3b4e2f5-67eb-4f73-810a-b4cb95c4cf7c")
+	)
+	(wire
+		(pts
 			(xy 43.18 93.98) (xy 57.15 93.98)
 		)
 		(stroke
@@ -5528,6 +5628,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 134.62) (xy 111.76 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f78b2b0e-4c95-45cc-8aaf-f9ee9007b4cd")
+	)
+	(wire
+		(pts
 			(xy 125.73 48.26) (xy 125.73 46.99)
 		)
 		(stroke
@@ -5545,6 +5655,16 @@
 			(type default)
 		)
 		(uuid "fe3fd49d-8ee1-45ed-86f0-f59ac4f8a4a1")
+	)
+	(wire
+		(pts
+			(xy 129.54 132.08) (xy 137.16 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fe5157fd-10c7-464c-bf02-759b6c2f506d")
 	)
 	(wire
 		(pts
@@ -5837,7 +5957,7 @@
 		(uuid "aeb9f396-0d55-49fb-b7d8-09991978c808")
 	)
 	(label "PE1"
-		(at 119.38 146.05 0)
+		(at 120.65 149.86 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6067,7 +6187,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR03")
 					(unit 1)
 				)
@@ -6145,7 +6265,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR08")
 					(unit 1)
 				)
@@ -6223,12 +6343,6 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
-					(reference "#PWR05")
-					(unit 1)
-				)
-			)
-			(project "Lab04-Design_task_ 1"
 				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR05")
 					(unit 1)
@@ -6345,9 +6459,15 @@
 		(pin "14"
 			(uuid "d2328a32-48ca-45e3-8caa-9f9df2a1adfa")
 		)
+		(pin "7"
+			(uuid "7a6136da-1056-42f6-b509-de04abee4f18")
+		)
+		(pin "14"
+			(uuid "58bcf3c2-6d93-481a-86d6-ba49949ea38e")
+		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "U1")
 					(unit 1)
 				)
@@ -6589,12 +6709,6 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
-					(reference "B1")
-					(unit 1)
-				)
-			)
-			(project "Lab04-Design_task_ 1"
 				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "B1")
 					(unit 1)
@@ -6604,7 +6718,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 119.38 123.19 0)
+		(at 120.65 123.19 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6615,7 +6729,7 @@
 		(fields_autoplaced yes)
 		(uuid "846012ad-a0b4-435c-b796-21de40457eb3")
 		(property "Reference" "#PWR011"
-			(at 119.38 127 0)
+			(at 120.65 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6626,7 +6740,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 119.38 118.11 0)
+			(at 120.65 118.11 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6636,7 +6750,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 119.38 123.19 0)
+			(at 120.65 123.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6647,7 +6761,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 119.38 123.19 0)
+			(at 120.65 123.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6658,7 +6772,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 119.38 123.19 0)
+			(at 120.65 123.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6673,7 +6787,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR011")
 					(unit 1)
 				)
@@ -6751,12 +6865,6 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
-					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-			(project "Lab04-Design_task_ 1"
 				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR04")
 					(unit 1)
@@ -6839,7 +6947,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "SW1")
 					(unit 1)
 				)
@@ -6917,7 +7025,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR014")
 					(unit 1)
 				)
@@ -6999,8 +7107,86 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 111.76 146.05 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "982ff7a5-6ba4-4c23-9dd2-e650ce232af3")
+		(property "Reference" "#PWR02"
+			(at 111.76 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 111.76 151.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 111.76 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "76169524-b5a4-4004-89ce-b70a737db781")
+		)
+		(instances
+			(project "Prelab 5"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -7133,7 +7319,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "BAR1")
 					(unit 1)
 				)
@@ -7236,7 +7422,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "RN1")
 					(unit 1)
 				)
@@ -7314,7 +7500,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR01")
 					(unit 1)
 				)
@@ -7392,12 +7578,6 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
-					(reference "#PWR06")
-					(unit 1)
-				)
-			)
-			(project "Lab04-Design_task_ 1"
 				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR06")
 					(unit 1)
@@ -7476,7 +7656,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR07")
 					(unit 1)
 				)
@@ -7554,7 +7734,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR015")
 					(unit 1)
 				)
@@ -7658,7 +7838,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "RN2")
 					(unit 1)
 				)
@@ -7736,7 +7916,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR012")
 					(unit 1)
 				)
@@ -7814,7 +7994,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR010")
 					(unit 1)
 				)
@@ -7935,7 +8115,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "SW2")
 					(unit 1)
 				)
@@ -8013,7 +8193,7 @@
 		)
 		(instances
 			(project "Prelab 5"
-				(path "/2bc521b7-9628-4883-aac5-e4db50350a1f"
+				(path "/b652f389-5275-44bd-a341-8481a2ee4dd0"
 					(reference "#PWR09")
 					(unit 1)
 				)
