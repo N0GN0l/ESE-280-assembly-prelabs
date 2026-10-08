@@ -33,7 +33,7 @@ display_and_update:
 	inc r17		         ;if the check fails then r17 is incremented by one
 	out VPORTD_OUT, r17	 ;outputs the value of r17 to display on VPORTD
 
-	cbi VPORTE_OUT, 1    ;resets the FF flage
+	cbi VPORTE_OUT, 0    ;resets the FF flage
 	sbi VPORTE_OUT, 1    ;goes back to high 
 
 	ldi r16, 200        ;25.6ms/0.1ms = 256, 256 is out of range so I put 200
