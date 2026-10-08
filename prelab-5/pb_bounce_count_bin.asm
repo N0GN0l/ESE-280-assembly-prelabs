@@ -7,6 +7,7 @@ start:
 	ldi r16, 0xFF	
 	out VPORTD_DIR, r16	;set all bits of VPORTD to output
 	ldi r17, 0x00	;set up r17 to 0
+	ldi r20, 0x00	;set up r20 to 0
 	out VPORTD_OUT, r17	;set up VPORTD to display initial value
 
 wait_for_0:
@@ -21,7 +22,8 @@ wait_for_1:
 	breq roll_over	
 
 	inc r17		;if the check fails then r17 is incremented by one
-	com r17		;LED are active low
+	mov r20, r17	;Need to copy the data so that the counter doesn't break
+	com r20		;LED are active low
 	out VPORTD_OUT, r17	;outputs the value of r17 to display on VPORTD
 	rjmp wait_for_0		;goes back to waiting for a 0
 	 
