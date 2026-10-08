@@ -28,6 +28,7 @@ wait_for_flag:
 	rjmp wait_for_flag
 
 display_and_update:
+	sbi VPORTE_OUT, 1	;reset PE1 so that the flip-flop doesnt get constantly cleared
 	cpi r17, 0xFF	     ;check to see if the next increment should be a rollover
 	breq roll_over	
 
