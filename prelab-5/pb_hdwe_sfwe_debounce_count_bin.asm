@@ -20,6 +20,7 @@ start:
 	ldi r16, 0xFF	
 	out VPORTD_DIR, r16	 ;set all bits of VPORTD to output
 	ldi r17, 0x00	     ;set up r17 to 0
+	ldi r20, 0x00		;set up r20 to 0
 	out VPORTD_OUT, r17	 ;set up VPORTD to display initial value
 	ldi r16, 200        ;25.6ms/0.1ms = 256, 256 is out of range so I put 200
 
