@@ -24,16 +24,22 @@ start:
 
 	sbi VPORTE_OUT, 1     ;sets PE1 high
 
+	cbi VPORTE_OUT, 2	  ;reset the flipflop at startup
+	sbi VPORTE_OUT, 2	  ;make sure the flipflop is not constantly reset
+
+	ldi r17, 0x00	;setup r17 to 0
+	ldi r18, 0x00	;setup r18 to 0
+
 
 wait_for_flag:
 	sbis VPORTE_IN, 0     ;skip rjmp if PE0 is 1
 	rjmp wait_for_flag
 
 	in r17, VPORTC_IN     ;reads data from PORTC into r17
-	out VPORTD_OUT, r17   ;displays onto bargraph
+	mov r18, r17
+	com r18		;LED are active low
+	out VPORTD_OUT, r18   ;displays onto bargraph
 
-	ldi r16, 200
-	rcall var_delay
 
 wait_for_release:
 	sbic VPORTE_IN, 2    ;skip rjmp is PE2 is 0
