@@ -7,7 +7,7 @@ start:
 	ldi r16, 0xFF	
 	out VPORTD_DIR, r16	;set all bits of VPORTD to output
 	ldi r17, 0x00	;set up r17 to 0
-	ldi r20, 0x00	;set up r20 to 0
+	ldi r18, 0x00	;set up r18 to 0
 	out VPORTD_OUT, r17	;set up VPORTD to display initial value
 
 wait_for_0:
@@ -18,16 +18,11 @@ wait_for_1:
 	sbis VPORTE_IN, 0	;if the bit is 0 then it will continously loop to wait for a 1
 	rjmp wait_for_1
 
-	cpi r17, 0xFF	;check to see if the next increment should be a rollover
-	breq roll_over	
+	inc r17		;r17 is incremented by 1
+	rjmp display 
 
-	inc r17		;if the check fails then r17 is incremented by one
-	mov r20, r17	;Need to copy the data so that the counter doesn't break
-	com r20		;LED are active low
-	out VPORTD_OUT, r17	;outputs the value of r17 to display on VPORTD
+display:	;turns on LED'S
+	mov r18, r17	;copies r17 to not affect the counter
+	com r18		;LED are active low so we compliment it
+	out VPORTD_OUT, r18		;output values to LED bits
 	rjmp wait_for_0		;goes back to waiting for a 0
-	 
-roll_over:
-	ldi r17, 0x00	;resets r17
-	out VPORTD_OUT, r17	;needs to still output to VPORTD
-	rjmp wait_for_0
