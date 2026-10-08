@@ -21,6 +21,7 @@ wait_for_1:
 	breq roll_over	
 
 	inc r17		;if the check fails then r17 is incremented by one
+	com r17		;LED are active low
 	out VPORTD_OUT, r17	;outputs the value of r17 to display on VPORTD
 	rjmp wait_for_0		;goes back to waiting for a 0
 	 
