@@ -21,6 +21,7 @@ start:
 	out VPORTD_DIR, r16	 ;set all bits of VPORTD to output
 	ldi r17, 0x00	     ;set up r17 to 0
 	out VPORTD_OUT, r17	 ;set up VPORTD to display initial value
+	ldi r16, 200        ;25.6ms/0.1ms = 256, 256 is out of range so I put 200
 
 wait_for_flag:
 	sbis VPORTE_IN, 0	 ;if the bit is 0 then it will continously loop back to the beginning 
@@ -33,20 +34,12 @@ display_and_update:
 	inc r17		         ;if the check fails then r17 is incremented by one
 	out VPORTD_OUT, r17	 ;outputs the value of r17 to display on VPORTD
 
-	cbi VPORTE_OUT, 1    ;goes back to high 
+	cbi VPORTE_OUT, 1    ;reset the flip flop 
 
-	ldi r16, 200        ;25.6ms/0.1ms = 256, 256 is out of range so I put 200
+	sbic VPORTE_IN, 2
 	rcall var_delay
+	rjmp wait_for_flag
 
-wait_for_release:
-	sbic VPORTE_OUT, 2   ;if the bit is 1 then it will continously loop back to the beginning
-	rjmp wait_for_release
-
-	cbi VPORTE_OUT, 1    ;resets the FF flag
-	sbi VPORTE_OUT, 1    ;goes back to high
-
-	rjmp wait_for_flag	 ;goes back to waiting for the flag
-	 
 roll_over:
 	ldi r17, 0x00	     ;resets r17
 	out VPORTD_OUT, r17	 ;needs to still output to VPORTD
