@@ -1,10 +1,13 @@
+.nolist
+.include "AVR128DB48def.inc"
+.list
+
 ;===================================
 ;Description
 ;This program using subroutines and delays to output a ASCII character frame from PB0
 ;The ASCII character is determined by r16 while the rest of the frame is predetermined
 ;
 ;===================================
-
 start:
 	ldi r16, 0x00         ;PC7 - PC0 set as inputs (Switch Bank)
 	out VPORTC_DIR, r16
@@ -18,7 +21,6 @@ start:
 	cbi VPORTE_OUT, 2	  ;reset the flipflop at startup
 	sbi VPORTE_OUT, 2	  ;make sure the flipflop is not constantly reset
 
-	ldi r20 0x08
 	sbi VPORTB_DIR, 0	;Set PB0 to output and use r20 as the loop control varaible, there are 7 bits so the register is n+1=8
 	sbi VPORTB_OUT, 0	;Set the initial value of VPORTB 0 to high
 
@@ -30,18 +32,20 @@ wait_for_flag:
 	rjmp wait_for_flag
 
 	in r16, VPORTC_IN     ;reads data from PORTC into r16
-	rcall serial_send
+
 
 wait_for_release:
 	sbic VPORTE_IN, 2    ;skip rjmp is PE2 is 0
 	rjmp wait_for_release
 
-	ldi r16, 100          ;i remember prof. short saying something was 10ms
+	ldi r23, 100          ;i remember prof. short saying something was 10ms
 	rcall var_delay
 
 	cbi VPORTE_IN, 1      ;resets flag
 	sbi VPORTE_IN, 1      ;sets PE1 high
 
+	rcall serial_send
+	rjmp delay_500ms
 	rjmp wait_for_flag
 
 var_delay:
@@ -50,22 +54,21 @@ outer_loop:
 inner_loop:
 	dec r18
 	brne inner_loop
-	dec r16
+	dec r23
 	brne outer_loop
 	ret
-
-
-
 
 ;=========================================
 ;Serial send function
 ;Used to output the ASCII character using PB0
-;r16 is used to store the ASCII charcter sequence
+;
 ;First bit must be low, next 8 bits will be determined by a GP register, P bit is 0, then one high bit for STOP
 ;========================================
 
 serial_send:
-	sbi VPORTB_OUT, 0	;Initial bit of the frame is always 0
+	ldi r17, 0x08
+	;Output character D using ASCII code 0x44 
+	cbi VPORTB_OUT, 0	;Initial bit of the frame is always 0
 	rcall bit_time_104us
 bit_sequence_loop:
 	lsr r16
@@ -73,11 +76,10 @@ bit_sequence_loop:
 	brcs output_one
 bit_delay:
 	rcall bit_time_104us
-	dec r20
+	dec r17
 	brne bit_sequence_loop
-	cbi VPORTB_OUT, 0	;Ending logic to output P = 0
-	rcall bit_time_104us
 	sbi VPORTB_OUT, 0	;S1 = 1
+	rcall bit_time_104us
 	ret
 
 
@@ -104,9 +106,9 @@ output_one:
 
 
 bit_time_104us:
-	ldi r16, 136
+	ldi r21, 136
 bt_loop:
-	dec r16
+	dec r21
 	brne bt_loop
 	nop
 	nop
@@ -114,3 +116,9 @@ bt_loop:
 
 
 
+
+
+delay_500ms:
+	ldi r30, LOW(2601)
+	ldi r31, HIGH(2601)	
+	rjmp wait_for_flag
