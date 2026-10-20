@@ -26,8 +26,6 @@
 #define t 0x74
 #define a 0x61
 
-
-
 start:
 	ldi r17 0x08
 	sbi VPORTB_DIR, 0	;Set PB0 to output and use r17 as the loop control varaible
@@ -126,8 +124,6 @@ main_loop:
 	ldi r16, w
 	rcall serial_send
 
-	
-
 ;=========================================
 ;Serial send function
 ;Used to output the ASCII character using PB0
@@ -153,9 +149,6 @@ bit_delay:
 	rcall delay_500ms
 	ret
 
-
-
-
 ;===========================
 ;Helper functions:
 ;
@@ -170,8 +163,6 @@ output_one:
 	sbi VPORTB_OUT, 0
 	rjmp bit_delay
 	
-
-
 ;====================
 ;Delay functions:
 
@@ -184,10 +175,6 @@ bt_loop:
 	nop
 	nop
 	ret
-
-
-
-
 
 delay_500ms:
 	ldi r30, LOW(2601)
