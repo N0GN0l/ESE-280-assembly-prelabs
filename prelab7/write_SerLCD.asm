@@ -25,9 +25,10 @@
 #define w 0x77
 #define t 0x74
 #define a 0x61
+#define s 0x73
 
 start:
-	ldi r17 0x08
+	ldi r17, 0x08
 	sbi VPORTB_DIR, 0	;Set PB0 to output and use r17 as the loop control varaible
 	sbi VPORTB_OUT, 0	;Set the initial value of VPORTB 0 to high
 main_loop:
