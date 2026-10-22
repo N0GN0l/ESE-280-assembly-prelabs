@@ -32,6 +32,7 @@ start:
 
 	ldi r16, 0x40           ;Enables Transmitter
 	sts USART3_CTRLB, r16
+	rcall delay_500us
 
 reset_ch:
 	ldi r18, 0x41           ;Loads 'A' into the register
