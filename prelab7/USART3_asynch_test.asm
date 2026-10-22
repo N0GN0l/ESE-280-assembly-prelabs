@@ -32,7 +32,7 @@ start:
 
 	ldi r16, 0x40           ;Enables Transmitter
 	sts USART3_CTRLB, r16
-	rcall delay_500us
+	rcall delay_500ms		;Account for setup time
 
 reset_ch:
 	ldi r18, 0x41           ;Loads 'A' into the register
@@ -51,3 +51,8 @@ loop:
 	inc r18                 ;Increments r18 to the next letter
 	rjmp wait_for_DRIEF     ;Goes back to waiting for the flag
 		
+
+delay_500ms:
+	ldi r30, LOW(2601)
+	ldi r31, HIGH(2601)	
+	ret
