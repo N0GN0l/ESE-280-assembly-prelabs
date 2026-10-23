@@ -16,7 +16,7 @@
 
 start:
 	sbi VPORTB_DIR, 0	    ;Set PB0 to output
-	sbi VPORTB_OUT, 0	    ;Set the initial value of VPORTB 0 to high
+	sbi VPORTB_OUT, 0
 
 	ldi r16, LOW(1667)      ;Load Baud register for 9600 baud 
 	sts USART3_BAUDL, r16
@@ -29,6 +29,7 @@ start:
 	ldi r16, 0x40           ;Enables Transmitter
 	sts USART3_CTRLB, r16
 
+	rcall delay_500ms
 
 	ldi r18, '|'		;|
 	rcall serial_send	;Call the output subroutine
