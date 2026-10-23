@@ -39,7 +39,7 @@ start:
 wait_for_DRIEF1:
 	lds r16, USART3_STATUS  ;Reads USART3 status register
 	sbrs r16, 5             ;Skip next line if DRIEF is 1
-	rjmp wait_for_DRIEF
+	rjmp wait_for_DRIEF1
 
 	sts USART3_TXDATAL, r18  ;writes content of r18 into the trasnmit buffer register
 
@@ -52,7 +52,7 @@ wait_for_DRIEF1:
 wait_for_DRIEF2:
 	lds r16, USART3_STATUS  ;Reads USART3 status register
 	sbrs r16, 5             ;Skip next line if DRIEF is 1
-	rjmp wait_for_DRIEF1
+	rjmp wait_for_DRIEF2
 
 	sts USART3_TXDATAL, r18  ;writes content of r18 into the trasnmit buffer register
 	rcall delay_500ms
