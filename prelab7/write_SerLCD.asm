@@ -12,15 +12,17 @@
 ;===================================
 
 start:
-	ldi r17, 0x08
 	sbi VPORTB_DIR, 0	;Set PB0 to output and use r17 as the loop control varaible
 	sbi VPORTB_OUT, 0	;Set the initial value of VPORTB 0 to high
-main_loop:
-	ldi r16, 0x7C		;|
+
+	rcall delay_500ms
+
+	ldi r18, '|'		;|
 	rcall serial_send	;Call the output subroutine
 	
-	ldi r16, 0x2E		;.
+	ldi r18, '-'		;.
 	rcall serial_send
+
 	
 	ldi r18, 'H'
 	rcall serial_send
@@ -109,6 +111,11 @@ main_loop:
 	ldi r18, 'w'
 	rcall serial_send
 
+
+
+main_loop:
+	rjmp main_loop
+
 ;=========================================
 ;Serial send function
 ;Used to output the ASCII character using PB0
@@ -116,22 +123,20 @@ main_loop:
 ;First bit must be low, next 8 bits will be determined by a GP register, P bit is 0, then one high bit for STOP
 ;========================================
 
-serial_send: 
-	sbi VPORTB_OUT, 0	;Initial bit of the frame is always 0
+serial_send:
+	ldi r17, 0x08
+	cbi VPORTB_OUT, 0	;Initial bit of the frame is always 0
 	rcall bit_time_104us
 bit_sequence_loop:
-	lsr r16
+	lsr r18
 	brcc output_zero
 	brcs output_one
 bit_delay:
 	rcall bit_time_104us
 	dec r17
 	brne bit_sequence_loop
-	cbi VPORTB_OUT, 0	;Ending logic to output P = 0
-	rcall bit_time_104us
 	sbi VPORTB_OUT, 0	;S1 = 1
 	rcall bit_time_104us
-	rcall delay_500ms
 	ret
 
 ;===========================
@@ -153,7 +158,7 @@ output_one:
 
 
 bit_time_104us:
-	ldi r16, 136
+	ldi r16, 136	
 bt_loop:
 	dec r16
 	brne bt_loop
@@ -163,5 +168,13 @@ bt_loop:
 
 delay_500ms:
 	ldi r30, LOW(2601)
-	ldi r31, HIGH(2601)	
+	ldi r31, HIGH(2601)
+
+outer_loop:
+	ldi r25, $FF
+inner_loop:
+	dec r25
+	brne inner_loop
+	sbiw r31:r30, 1
+	brne outer_loop
 	ret
