@@ -30,7 +30,7 @@ start:
 
 ;*****************************************************************************
 ;* 
-;* "half_bit_time_52us" - 52us Delay Subroutine
+;* "half_bit_time_52us" - half_bit_time_test
 ;*
 ;* Description:
 ;*	 Generates a 52us delay which is 208 clock cycles using our 4Mhz frequency
@@ -54,8 +54,8 @@ start:
 
 half_bit_time_52us:
 	ldi r16, 67			    // 1 clock
-half_bt_loop:
+bt_loop:
 	dec r16					// 1 clock
-	brne half_bt_loop			// 2/1 clocks
+	brne bt_loop			// 2/1 clocks
 	nop                     // 1 padding
 	ret						// 4
