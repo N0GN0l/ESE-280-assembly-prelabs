@@ -54,8 +54,8 @@ start:
 
 half_bit_time_52us:
 	ldi r16, 67			    // 1 clock
-bt_loop:
+half_bt_loop:
 	dec r16					// 1 clock
-	brne bt_loop			// 2/1 clocks
+	brne half_bt_loop			// 2/1 clocks
 	nop                     // 1 padding
 	ret						// 4
