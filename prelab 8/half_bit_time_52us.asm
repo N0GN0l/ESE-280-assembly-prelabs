@@ -30,7 +30,7 @@ start:
 
 ;*****************************************************************************
 ;* 
-;* "half_bit_tine_52us" - 52us Delay Subroutine
+;* "half_bit_time_52us" - 52us Delay Subroutine
 ;*
 ;* Description:
 ;*	 Generates a 52us delay which is 208 clock cycles using our 4Mhz frequency
