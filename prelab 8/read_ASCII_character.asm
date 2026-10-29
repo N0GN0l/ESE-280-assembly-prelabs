@@ -46,7 +46,7 @@ display:
 ;* Version: 1.0 Original Version
 ;* Last updated: 10/29/2026
 ;* Target: Atmega4809
-;* Number of words: 20
+;* Number of words: 22
 ;* Number of cycles: Depends on when the negative edge comes
 ;* Low registers modified: None
 ;* High registers modified: r16, r17, r18
@@ -60,14 +60,18 @@ display:
 ;***************************************************************************** 
 
 serial_recieve:
-negative_edge:
+wait_for_1:
+	sbis VPORTB_IN, 1                   ;skips next line if PB1 is 1 (start bit)
+	rjmp wait_for_1                      
+
+wait_for_0:
 	sbic VPORTB_IN, 1                   ;skips next line if PB1 is 0 (start bit)
-	rjmp negative_edge                  ;loops while PB1 is high
+	rjmp wait_for_0                     ;loops while PB1 is high
 
 	rcall half_bit_time_52us            ;delays half a bit time to check that the bit will still be 0
 
 	sbic VPORTB_IN, 1                   ;checks that PB1 is still 0
-	rjmp negative_edge
+	rjmp wait_for_1
 
 	ldi r17, 8                          ;lcv
 bit_loop:
