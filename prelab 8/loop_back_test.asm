@@ -8,11 +8,11 @@
 
 
 start:
-    	ldi r16, 0xFF                     ;PD7 - PD0 output
+    ldi r16, 0xFF                     ;PD7 - PD0 output
 	out VPORTD_DIR, r16
 	cbi VPORTB_DIR, 1                 ;PB1 input, Rx pin
 	
-	ldi r16, LOW(1667)		;Set BAUD rate
+	ldi r16, LOW(1667)			;Set BAUD rate
 	sts USART3_BAUDL, r16
 	ldi r16, HIGH(1667)
 	sts USART3_BAUDH, r16
