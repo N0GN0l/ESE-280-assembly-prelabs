@@ -1,3 +1,27 @@
+;
+; read_ASCII_char_hdwe.asm
+;***************************************************************************
+;*
+;* Title: Lab 08: Software and Hardware Serial Recievers, Design Task 3
+;* Author: Daniel Zhou and Sophia Rahman
+;* Version: 1.0 Original Version
+;* Last updated: 10/29/2026
+;* Target: Atmega4809
+;*
+;* DESCRIPTION
+;* This program uses USART3 Rx pin to poll the start bit and read the ASCII 
+;* character. In the subroutine "serial_recieve_hdwe", it recieves the 
+;* character and returns it to r16 along with a carry flag that represents
+;* if there was framing error. 
+;*
+;* VERSION HISTORY
+;* 1.0 Original version
+;***************************************************************************
+
+.nolist 
+.include "m4809def.inc"
+.list
+
 start:
   cbi VPORTB_DIR, 1    ;Set PB1 to input
   ;sbi VPORTB_OUT, 0    ;Set the initial value of VPORTB 0 to high
@@ -28,6 +52,32 @@ main_loop:
   out VPORTD_OUT, r16
 
   rjmp main_loop
+
+;*****************************************************************************
+;* 
+;* "serial_recieve_hdwe" - read_ASCII_char_hdwe
+;*
+;* Description:
+;* Reads the status register and once it is good, it reads the ASCII characters
+;* into r16 and checks if there was a framing error and based on that 
+;* it sets or clears the carry flag. 
+;*
+;* Author: Daniel Zhou and Sophia Rahman
+;* Version: 1.0 Original Version
+;* Last updated: 10/29/2026
+;* Target: Atmega4809
+;* Number of words: 14
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16
+;*
+;* Parameters: None
+;*
+;* Returns: ASCII char in r16 and carry flag
+;*
+;* Notes: RXCIF is bit 7, FERR is bit 2, RXDATAL holds all the data
+;*
+;***************************************************************************** 
 
 serial_receive_hdwe:
 
