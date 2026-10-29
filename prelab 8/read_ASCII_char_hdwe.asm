@@ -48,4 +48,3 @@ frame_good:
 read_data:
   lds r16, USART3_RXDATAL
   ret
-t
