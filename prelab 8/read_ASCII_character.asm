@@ -82,8 +82,8 @@ wait_for_0:
 bit_loop:
 	rcall bit_time_104us                ;one bit time delay after each bit
 
-	sbic VPORTB_IN, 1                   ;checks if PB1 is 0
-	sec                                 ;Sets Carry flag high
+	sbis VPORTB_IN, 1                   ;checks if PB1 is 1
+	rjmp framing_error                  ;Framing error
 
 	ror r18                             ;rotate carry bit into MSB
 	dec r17                             ;decrements loop counter
@@ -92,11 +92,11 @@ bit_loop:
 	rcall bit_time_104us
 	rjmp stop_bit
 
-	sec                                 ;Sets Carry Flag (FE = 1)
-	mov r16, r18                        ;moves the bits into r16
-	ret
-stop_bit:
-	clc                                 ;Clears Carry Flag (FE = 0)
+	clc                                 ;clears Carry Flag (FE = 0)
+	rjmp done
+framing_error:
+	sec                                 ;sets Carry Flag (FE = 1)
+done:
 	mov r16, r18                        ;moves the bits into r16
 	ret
 
