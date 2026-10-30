@@ -24,7 +24,7 @@
 
 start:
   cbi VPORTB_DIR, 1    ;Set PB1 to input
-  ;sbi VPORTB_OUT, 0    ;Set the initial value of VPORTB 0 to high
+  sbi VPORTB_OUT, 0    ;Set the initial value of VPORTB 0 to high
 
   ldi r16, 0xFF
   out VPORTD_DIR, r16
