@@ -80,24 +80,26 @@ wait_for_0:
 
 	ldi r17, 8                          ;lcv
 bit_loop:
-	rcall bit_time_104us                ;one bit time delay after each bit
+	rcall bit_time_104us                ;wait 1 bit time
 
-	sbis VPORTB_IN, 1                   ;checks if PB1 is 1
-	rjmp framing_error                  ;Framing error
+	clc                                 ;clear carry before pin check
+	sbic VPORTB_IN, 1                   ;if pin is 0, skip set carry
+	sec                                 ;set Carry
 
-	ror r18                             ;rotate carry bit into MSB
-	dec r17                             ;decrements loop counter
-	brne bit_loop                       ;Goes through all 8 bits
+	ror r18                             ;rotate carry bit into MSB of r18
+	dec r17                            
+	brne bit_loop                       ;repeat for all 8 bits
 
-	rcall bit_time_104us
-	rjmp stop_bit
+	rcall bit_time_104us                ;delay to middle of Stop Bit
+	sbis VPORTB_IN, 1                   ;skip if Stop Bit is HIGH
+	rjmp framing_error                 
 
-	clc                                 ;clears Carry Flag (FE = 0)
-	rjmp done
+	clc                                 ;C = 0 (No FE)
+	rjmp rx_done
 framing_error:
-	sec                                 ;sets Carry Flag (FE = 1)
-done:
-	mov r16, r18                        ;moves the bits into r16
+	sec                                 ;C = 1 (FE)
+rx_done:
+	mov r16, r18                        ;return char in r16
 	ret
 
 ;*****************************************************************************
