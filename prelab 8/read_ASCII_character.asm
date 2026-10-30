@@ -17,6 +17,11 @@
 ;* VERSION HISTORY
 ;* 1.0 Original version
 ;***************************************************************************
+
+.nolist
+.include "m4809def.inc"
+.list
+
 start:
     ldi r16, 0xFF                     ;PD7 - PD0 output
 	out VPORTD_DIR, r16
@@ -36,7 +41,7 @@ display:
 
 ;*****************************************************************************
 ;* 
-;* "serial_recieve" - Software Serial Reciever Subroutine
+;* "serial_recieve" - read_ASCII_character
 ;*
 ;* Description:
 ;* Polls PB1 to detect negative edge (start of the frame), and checks for a 
@@ -97,7 +102,24 @@ stop_bit:
 
 ;*****************************************************************************
 ;* 
-;* "half_bit_time_52us" - 52us Delay Subroutine
+;* "half_bit_time_52us" - read_ASCII_character
+;*
+;* Description:
+;*	 Generates a 52us delay which is 208 clock cycles using our 4Mhz frequency
+;* and it represents half a bit time for 9600 serial baud. 
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0 Original Version
+;* Last updated: 10/29/2026
+;* Target: Atmega4809
+;* Number of words: 5
+;* Number of cycles: 206 (208 if we include rcall)
+;* Low registers modified: None
+;* High registers modified: r16
+;*
+;* Parameters: None
+;*
+;* Returns: None
+;*
 ;* Notes: Clock rate = 0.25us/cycle, 52us * 0.25us/cycle = 208 cycles
 ;*
 ;***************************************************************************** 
@@ -112,10 +134,28 @@ half_bt_loop:
 
 ;*****************************************************************************
 ;* 
-;* "bit_time_104us" - 104us Delay Subroutine
+;* "bit_time_104us" - read_ASCII_character
+;*
+;* Description:
+;*	 Generates a 104us delay which is 416 clock cycles using our 4Mhz frequency
+;* and it represents a bit time for 9600 serial baud. 
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0 Original Version
+;* Last updated: 10/29/2026
+;* Target: Atmega4809
+;* Number of words: 6
+;* Number of cycles: 414 (416 if we include rcall)
+;* Low registers modified: None
+;* High registers modified: r16
+;*
+;* Parameters: None
+;*
+;* Returns: None
+;*
 ;* Notes: Clock rate = 0.25us/cycle, 104us * 0.25us/cycle = 416 cycles
 ;*
 ;***************************************************************************** 
+
 bit_time_104us:
 	ldi r16, 136                        // 1 clock
 bt_loop:
