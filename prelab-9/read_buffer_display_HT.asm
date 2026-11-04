@@ -1,28 +1,74 @@
+;
+; read_buffer_display_HT.asm
+;***************************************************************************
+;*
+;* Title: Lab 09: Humidity and Temperature Measurements, Design Task 3
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0
+;* Last updated: 11/4/2026
+;* Target: Atmega4809
+;*
+;* DESCRIPTION
+;* In this program, USART1 reads ASCII characters from the SHT40 sensor and
+;* it gets written into the memory buffer in the SRAM and that is done in the
+;* serial_receive_hdwe_buff subroutine. Once all the characters have been 
+;* received, a memory flag is set to indicated that it is ready to be
+;* received. It is then sent to the LCD display using the subroutine 
+;* memory_buffer_to_LCD. 
+;*
+;* VERSION HISTORY
+;* 1.0 Original version
+;***************************************************************************
+
 .nolist
-.include "AVR128DB48def.inc"
+.include "m4809def.inc"
 .list
 
 
 .dseg
-mem_buffer: .byte 18 			;The module outputs a string of 18 characters, each char is 1 byte
-buff_flag: .byte 1 				;Memory flag, 1 = a complete string is in mem_buffer and ready to be processed
+mem_buffer: .byte 18 			    ;The module outputs a string of 18 characters, each char is 1 byte
+buff_flag: .byte 1 				    ;Memory flag, 1 = a complete string is in mem_buffer and ready to be processed
 
 
 
 .cseg
 .org 0x0000
-rjmp start ;Jump over the reset subroutine so the CPU actually reaches start
+rjmp start                          ;Jump over the reset subroutine so the CPU actually reaches start
 
+;***************************************************************************
+;* 
+;* "reset" - read_buffer_display_HT
+;*
+;* Description:
+;* Initializes the Y pointer to the start of the memory buffer, resets it
+;* to the beginning of the SRAM buffer
+;*
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0
+;* Last updated: 11/4/2026
+;* Target: ATmega4809
+;* Number of words: 3
+;* Number of cycles: 6
+;* Low registers modified: None
+;* High registers modified: YL (r28), YH (r29)
+;*
+;* Parameters: None
+;*
+;* Returns: Y pointers
+;*
+;* Notes: None
+;*
+;***************************************************************************
 reset:
-    ldi YL, LOW(mem_buffer) ;Initialize the pointer to the buffer
+    ldi YL, LOW(mem_buffer)        ;Initialize the pointer to the buffer
     ldi YH, HIGH(mem_buffer)
     ret
 
     start:
-    ldi r16, 0x80 				;Setup USART1 and 3 at the same time
-    sts USART1_CTRLB, r16 		;Enable the reciever of USART1
+    ldi r16, 0x80 			       ;Setup USART1 and 3 at the same time
+    sts USART1_CTRLB, r16 	       ;Enable the reciever of USART1
     ldi r16, 0x40
-    sts USART3_CTRLB, r16 		;Enable the trasmission of USART3
+    sts USART3_CTRLB, r16 	       ;Enable the trasmission of USART3
 
     ldi r16, LOW(1667)
     sts USART1_BAUDL, r16
@@ -31,25 +77,16 @@ reset:
     sts USART1_BAUDH, r16
     sts USART3_BAUDH, r16
 
-    ldi r16, 0x03
+    ldi r16, 0x03                  ;asynch frame format, 8N1
     sts USART1_CTRLC, r16
     sts USART3_CTRLC, r16
 
-    sbi VPORTB_DIR, 0 			;Make PB0 an output as it is the transmision pin for USART3
-    cbi VPORTC_DIR, 1 			;Make PC1 an input as it is the RX pin for USART1
+    sbi VPORTB_DIR, 0 			   ;Make PB0 an output as it is the transmision pin for USART3
+    cbi VPORTC_DIR, 1 			   ;Make PC1 an input as it is the RX pin for USART1
 
     clr r16
-    sts buff_flag, r16 ;Clear the memory flag at startup
-    rcall reset ;Point Y at the start of mem_buffer before any characters come in
-
-
-
-
-
-
-
-
-
+    sts buff_flag, r16             ;Clear the memory flag at startup
+    rcall reset                    ;Point Y at the start of mem_buffer before any characters come in
 
 main_loop:
     rcall serial_receive_hdwe_buff
@@ -57,86 +94,146 @@ main_loop:
     rjmp main_loop
 
 
-
-
-
-;**********************************
+;***************************************************************************
+;* 
+;* "serial_recieve_hdwe_buff" - read_buffer_display_HT
 ;*
+;* Description:
+;* Reads the status register of USART1 and verifies that it is ready to read
+;* the ASCII character into r16. Then checks for framing errors (FERR) and 
+;* stores the ASCII character into the mem_buffer using the Y pointer, and
+;* checks if all 18 bytes have been received. Then sets buff_flag to 1 and
+;* resets Y pointer.
 ;*
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0
+;* Last updated: 11/4/2026
+;* Target: ATmega4809
+;* Number of words: 22 words
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r18, r19, YL (r28), YH (r29)
 ;*
+;* Parameters: Y pointers, must point to current write position in mem_buffer
 ;*
+;* Returns: Updated Y pointer and buff_flag if all 18 bytes received
 ;*
-;*********************************
+;* Notes: None
+;*
+;***************************************************************************
 serial_receive_hdwe_buff:
-    lds r16, USART1_STATUS  			;Reads USART1 status register
-    sbrs r16, 7             			;Skip next line if RXCIF is 1, receive complete is RXCIF
+    lds r16, USART1_STATUS  		;Reads USART1 status register
+    sbrs r16, 7             		;Skip next line if RXCIF is 1, receive complete is RXCIF
     rjmp serial_receive_hdwe_buff
 
-    lds r18, USART1_RXDATAH 			;Store the receiver data into r18 (FERR is bit 2 of RXDATAH)
-    sbrs r18, 2 ;FERR
-    rjmp frame_good
+    lds r18, USART1_RXDATAH 		;Store the receiver data into r18 (FERR is bit 2 of RXDATAH)
+	lds r16, USART1_RXDATAL
+    sbrc r18, 2                     ;FERR
+	;rjmp frame_good
 
-    sec
-    rjmp read_data
+    ;sec
+    ;rjmp read_data
 
-frame_good:
-    clc
+;frame_good:
+    ;clc
+
+;read_data:
+    ;lds r16, USART1_RXDATAL
+    ret
 
 read_data:
-    lds r16, USART1_RXDATAL
-    st Y+, r16 								;Store the character into the mem_buffer and then increment the pointer so that the next go around, it will store
+    st Y+, r16 						;Store the character into the mem_buffer and then increment the pointer so that the next go around, it will store
 
-    ldi r18, LOW(mem_buffer + 18) 			;Store the value of the LOW half of mem_buffer, plus 18 which will be the position of the YL pointer when the string is completed
-    ldi r19, HIGH(mem_buffer + 18) 			;Store the value of the HIGH half of the mem_buffer, plus 18 which will be the position of the YH pointer when the string is completed
+    ldi r18, LOW(mem_buffer + 18) 	;Store the value of the LOW half of mem_buffer, plus 18 which will be the position of the YL pointer when the string is completed
+    ldi r19, HIGH(mem_buffer + 18) 	;Store the value of the HIGH half of the mem_buffer, plus 18 which will be the position of the YH pointer when the string is completed
 
-    cp YL, r18 					;Compare the pointer against r18, which curretly stores the value of the LOW half of mem_buffer + 18
-    cpc YH, r19 				;Compare with carry the pointer against r19, which currently stores the value of the HIGH half of the mem_buffer + 18
-    breq buff_full 				;If both comparisons run true, then the buffer is full and we set the memory flag buff_flag to 1
-    rjmp return 				;If the comparisons fail, then we just return from the subroutine
+    cp YL, r18 					    ;Compare the pointer against r18, which curretly stores the value of the LOW half of mem_buffer + 18
+    cpc YH, r19 				    ;Compare with carry the pointer against r19, which currently stores the value of the HIGH half of the mem_buffer + 18
+    breq buff_full 			 	    ;If both comparisons run true, then the buffer is full and we set the memory flag buff_flag to 1
+    rjmp return 				    ;If the comparisons fail, then we just return from the subroutine
+
 buff_full:
     ldi r16, 1
-    sts buff_flag, r16 			;Set the memory flag to show a complete string has been received
-    rcall reset 				;Put the Y pointer back to the start of the buffer for the next string
-    return:
+    sts buff_flag, r16 			    ;Set the memory flag to show a complete string has been received
+    rcall reset 				    ;Put the Y pointer back to the start of the buffer for the next string
+return:
     ret
 
 
-;*******************************
+;***************************************************************************
+;* 
+;* "memory_buffer_to_LCD" - read_buffer_display_HT
 ;*
+;* Description:
+;* Checks buff_flag and if it is set, transmits the data from the mem_buffer
+;* to SerLCD display using USART3 and then clears buff_flag
 ;*
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0
+;* Last updated: 11/4/2026
+;* Target: ATmega4809
+;* Number of words: 17
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r18, r21, ZL (r30), ZH (r31)
 ;*
+;* Parameters: None
 ;*
+;* Returns: None
 ;*
-;******************************
+;* Notes: None
+;*
+;***************************************************************************
 memory_buffer_to_LCD:
-    lds r16, buff_flag 			;Load the memory flag
+    lds r16, buff_flag 			   ;Load the memory flag
     tst r16
-    breq send_return 			;If the flag is not set then immediately skip to the return of the subroutine
-    ldi r21, 18 				;Loop counter varaible
-    ldi ZL, LOW(mem_buffer) 			;Z is the read pointer, set it back to the beginning of the buffer (Y stays as the write pointer)
+    breq send_return 			   ;If the flag is not set then immediately skip to the return of the subroutine
+    ldi r21, 18 				   ;Loop counter varaible
+    ldi ZL, LOW(mem_buffer) 	   ;Z is the read pointer, set it back to the beginning of the buffer (Y stays as the write pointer)
     ldi ZH, HIGH(mem_buffer)
 send_loop:
-    dec r21 					;Execute then count loop
-    ld r18, Z+ 					;load the character at the pointer into r18, then increment
-    rcall serial_send 			;call serial_send to send the character that was stored into r18 to the LCD
-    cpi r21, 0 					;See if the loop has completed yet
-    brne send_loop 				;If not loop back
+    dec r21 					   ;Execute then count loop
+    ld r18, Z+ 					   ;load the character at the pointer into r18, then increment
+    rcall serial_send 			   ;call serial_send to send the character that was stored into r18 to the LCD
+    cpi r21, 0 					   ;See if the loop has completed yet
+    brne send_loop 				   ;If not loop back
 
     clr r16
-    sts buff_flag, r16 			;Clear the memory flag after the loop finishes
-    ret 						;Separate return for the "string was sent" path, put the breakpoint here
+    sts buff_flag, r16 			   ;Clear the memory flag after the loop finishes
+    ret 						   ;Separate return for the "string was sent" path, put the breakpoint here
     send_return:
     ret
 
 
-
-
-
+;***************************************************************************
+;* 
+;* "serial_send" - read_buffer_display_HT
+;*
+;* Description:
+;* Reads status registers and verifies that it is ready to accept a new byte
+;* and then sends by writing it to the transmit buffer register.
+;*
+;* Author: Sophia Rahman and Daniel Zhou
+;* Version: 1.0
+;* Last updated: 11/4/2026
+;* Target: ATmega4809
+;* Number of words: 7
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r18
+;*
+;* Parameters: None
+;*
+;* Returns: None
+;*
+;* Notes: STATUS registers bit 5 is DRIEF and TXDATAL is for data to transmit
+;*
+;***************************************************************************
 serial_send:
-    lds r16, USART3_STATUS  	;Reads USART3 status register
-    sbrs r16, 5             	;Skip next line if DRIEF is 1
+    lds r16, USART3_STATUS  	  ;Reads USART3 status register
+    sbrs r16, 5             	  ;Skip next line if DRIEF is 1
     rjmp serial_send
 
-    sts USART3_TXDATAL, r18  	;writes content of r18 into the trasnmit buffer register
+    sts USART3_TXDATAL, r18  	  ;writes content of r18 into the trasnmit buffer register
 
     ret
