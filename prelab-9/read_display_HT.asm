@@ -6,7 +6,7 @@
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;*
 ;* DESCRIPTION
 ;* In this program, the measurements from the SHT40 sensor are read using 
@@ -19,7 +19,7 @@
 ;***************************************************************************
 
 .nolist
-.include "m4809def.inc"
+.include "avr128db48def.inc"
 .list
 
 start:
@@ -60,7 +60,7 @@ main_loop:
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 11
 ;* Number of cycles: Varies
 ;* Low registers modified: None
@@ -97,7 +97,7 @@ serial_receive_hdwe:
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 7
 ;* Number of cycles: Varies
 ;* Low registers modified: None
