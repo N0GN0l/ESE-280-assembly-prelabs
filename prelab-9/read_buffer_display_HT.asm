@@ -6,7 +6,7 @@
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: Atmega4809
+;* Target: AVR128DB48
 ;*
 ;* DESCRIPTION
 ;* In this program, USART1 reads ASCII characters from the SHT40 sensor and
@@ -21,7 +21,7 @@
 ;***************************************************************************
 
 .nolist
-.include "m4809def.inc"
+.include "avr128db48def.inc"
 .list
 
 
@@ -46,7 +46,7 @@ rjmp start                          ;Jump over the reset subroutine so the CPU a
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 3
 ;* Number of cycles: 6
 ;* Low registers modified: None
@@ -108,7 +108,7 @@ main_loop:
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 25 words
 ;* Number of cycles: Varies
 ;* Low registers modified: None
@@ -167,7 +167,7 @@ return:
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 17
 ;* Number of cycles: Varies
 ;* Low registers modified: None
@@ -212,7 +212,7 @@ send_loop:
 ;* Author: Sophia Rahman and Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
-;* Target: ATmega4809
+;* Target: AVR128DB48
 ;* Number of words: 7
 ;* Number of cycles: Varies
 ;* Low registers modified: None
