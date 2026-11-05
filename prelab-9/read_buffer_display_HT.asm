@@ -109,7 +109,7 @@ main_loop:
 ;* Version: 1.0
 ;* Last updated: 11/4/2026
 ;* Target: ATmega4809
-;* Number of words: 22 words
+;* Number of words: 25 words
 ;* Number of cycles: Varies
 ;* Low registers modified: None
 ;* High registers modified: r16, r18, r19, YL (r28), YH (r29)
@@ -127,21 +127,17 @@ serial_receive_hdwe_buff:
     rjmp serial_receive_hdwe_buff
 
     lds r18, USART1_RXDATAH 		;Store the receiver data into r18 (FERR is bit 2 of RXDATAH)
-	lds r16, USART1_RXDATAL
     sbrc r18, 2                     ;FERR
-	;rjmp frame_good
+	rjmp frame_good
 
-    ;sec
-    ;rjmp read_data
+    sec
+    rjmp read_data
 
-;frame_good:
-    ;clc
-
-;read_data:
-    ;lds r16, USART1_RXDATAL
-    ret
+frame_good:
+    clc
 
 read_data:
+    lds r16, USART1_RXDATAL
     st Y+, r16 						;Store the character into the mem_buffer and then increment the pointer so that the next go around, it will store
 
     ldi r18, LOW(mem_buffer + 18) 	;Store the value of the LOW half of mem_buffer, plus 18 which will be the position of the YL pointer when the string is completed
