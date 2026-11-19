@@ -20,7 +20,7 @@
 
 
 .nolist
-.include "avr128db48def.inc"
+.include "m4809def.inc"
 .list
 
 .dseg                          ;Establishes a data segment for memory variable
@@ -95,21 +95,24 @@ main_loop:
 ;* "read_USART0" - hlk_ld2440c_incoming_data
 ;*
 ;* Description:
-;*
+;* This subroutine checks the status register and then reads the incoming
+;* byte and stores it into r18, it also checks if there is any framing
+;* errors and notifies that with the Carry flag and then reads the byte into
+;* r16. 
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 14
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: 16, 18
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: Byte in r16, Carry flag
 ;*
-;* Notes: 
+;* Notes: polls RXCIF and checks FERR
 ;*
 ;***************************************************************************
 read_USART0:
@@ -136,21 +139,25 @@ read_data:
 ;* "serial_receive" - hlk_ld2440c_incoming_data
 ;*
 ;* Description:
+;* This subroutine puts all 23 bytes into the memory buffer in the SRAM. It
+;* verifies that the header of the frame is correct  (0xF4, 0xF3, 0xF2, 0xF1) 
+;* and then it saves the the frame header in the mem_buffer and then it loops
+;* until the rest of the bytes are in the mem_buffer. 
 ;*
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 39
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: 16, 17, 19, YL (r28), YH (r29)
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: 23 byte data in SRAM and buff_flag
 ;*
-;* Notes: 
+;* Notes: calls reset sub and read_USART0 sub
 ;*
 ;***************************************************************************
 serial_receive:
@@ -213,21 +220,24 @@ save_loop:
 ;* "check_for_human" - hlk_ld2440c_incoming_data
 ;*
 ;* Description:
+;* This subroutine checks that the buff_flag is set and then reads the target
+;* state to check if there was a target or not and then if there is a target
+;* it turns the LED on and then it clears the buff_flag. 
 ;*
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 15
+;* Number of cycles: Varies, 10 (buff_flag not set), 19 (Led off), 20 (Led on)
+;* Low registers modified: None
+;* High registers modified: 16
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: None
 ;*
-;* Notes: 
+;* Notes: None
 ;*
 ;***************************************************************************
 check_for_human:
