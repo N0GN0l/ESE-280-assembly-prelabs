@@ -118,21 +118,24 @@ main_loop:
 ;* "read_USART0" - target_state
 ;*
 ;* Description:
-;*
+;* This subroutine checks the status register and then reads the incoming
+;* byte and stores it into r18, it also checks if there is any framing
+;* errors and notifies that with the Carry flag and then reads the byte into
+;* r16. 
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 14
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r18
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: Byte in r16, Carry flag
 ;*
-;* Notes: 
+;* Notes: polls RXCIF and checks FERR
 ;*
 ;***************************************************************************
 read_USART0:
@@ -159,21 +162,25 @@ read_data:
 ;* "serial_receive" - target_state
 ;*
 ;* Description:
+;* This subroutine puts all 23 bytes into the memory buffer in the SRAM. It
+;* verifies that the header of the frame is correct  (0xF4, 0xF3, 0xF2, 0xF1) 
+;* and then it saves the the frame header in the mem_buffer and then it loops
+;* until the rest of the bytes are in the mem_buffer. 
 ;*
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 39
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r17, r19, YL (r28), YH (r29)
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: 23 byte data in SRAM and buff_flag
 ;*
-;* Notes: 
+;* Notes: calls reset sub and read_USART0 sub
 ;*
 ;***************************************************************************
 serial_receive:
@@ -236,21 +243,24 @@ save_loop:
 ;* "check_for_human" - target_state
 ;*
 ;* Description:
+;* This subroutine checks that the buff_flag is set and then reads the target
+;* state to check if there was a target or not and then if there is a target
+;* it turns the LED on.
 ;*
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 12
+;* Number of cycles: 10 (buff_flag not set), 16 (Led off), 17 (Led on)
+;* Low registers modified: None
+;* High registers modified: r16
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: None
 ;*
-;* Notes: 
+;* Notes: None
 ;*
 ;***************************************************************************
 check_for_human:
@@ -277,21 +287,24 @@ check_done:
 ;* "display_target_state" - target_state
 ;*
 ;* Description:
+;* This subroutine checks that the buff_flag is set, then sets up the LCD
+;* to write the target state, and then finds the target state, and uses
+;* serial_send to display it on the LCD, and then it clears the buff_flag.
 ;*
 ;* Author: Sophia Rahman, Daniel Zhou
 ;* Version: 1.0
 ;* Last updated: 11/17/2026
 ;* Target: AVR128DB48
-;* Number of words:
-;* Number of cycles:
-;* Low registers modified:
-;* High registers modified:
+;* Number of words: 23
+;* Number of cycles: Varies
+;* Low registers modified: None
+;* High registers modified: r16, r18
 ;*
-;* Parameters:
+;* Parameters: None
 ;*
-;* Returns:
+;* Returns: None
 ;*
-;* Notes: 
+;* Notes: None
 ;*
 ;***************************************************************************
 display_target_state:
