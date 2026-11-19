@@ -20,7 +20,7 @@
 
 
 .nolist
-.include "m4809def.inc"
+.include "avr128db48def.inc"
 .list
 
 .dseg                          ;Establishes a data segment for memory variable
